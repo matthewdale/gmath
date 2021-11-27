@@ -161,7 +161,7 @@ func TestCopysign(t *testing.T) {
 			want  myInt
 		}{
 			{
-				input: [2]myInt{-3, 2},
+				input: [2]myInt{-3, 5},
 				want:  3,
 			},
 		}
@@ -178,23 +178,23 @@ func TestCopysign(t *testing.T) {
 			want  int
 		}{
 			{
-				input: [2]int{3, 2},
+				input: [2]int{3, 5},
 				want:  3,
 			},
 			{
-				input: [2]int{-3, -2},
+				input: [2]int{-3, -5},
 				want:  -3,
 			},
 			{
-				input: [2]int{3, -2},
+				input: [2]int{3, -5},
 				want:  -3,
 			},
 			{
-				input: [2]int{-3, 2},
+				input: [2]int{-3, 5},
 				want:  3,
 			},
 			{
-				input: [2]int{math.MinInt, 2},
+				input: [2]int{math.MinInt, 5},
 				want:  math.MinInt,
 			},
 		}
@@ -211,23 +211,23 @@ func TestCopysign(t *testing.T) {
 			want  int64
 		}{
 			{
-				input: [2]int64{3, 2},
+				input: [2]int64{3, 5},
 				want:  3,
 			},
 			{
-				input: [2]int64{-3, -2},
+				input: [2]int64{-3, -5},
 				want:  -3,
 			},
 			{
-				input: [2]int64{3, -2},
+				input: [2]int64{3, -5},
 				want:  -3,
 			},
 			{
-				input: [2]int64{-3, 2},
+				input: [2]int64{-3, 5},
 				want:  3,
 			},
 			{
-				input: [2]int64{math.MinInt64, 2},
+				input: [2]int64{math.MinInt64, 5},
 				want:  math.MinInt64,
 			},
 		}
@@ -244,40 +244,44 @@ func TestCopysign(t *testing.T) {
 			want  float32
 		}{
 			{
-				input: [2]float32{3.2, 2},
+				input: [2]float32{3.2, 5},
 				want:  3.2,
 			},
 			{
-				input: [2]float32{-3.2, -2},
+				input: [2]float32{-3.2, -5},
 				want:  -3.2,
 			},
 			{
-				input: [2]float32{3.2, -2},
+				input: [2]float32{3.2, -5},
 				want:  -3.2,
 			},
 			{
-				input: [2]float32{-3.2, 2},
+				input: [2]float32{-3.2, 5},
 				want:  3.2,
 			},
 			{
-				input: [2]float32{math.MaxFloat32, -2},
+				input: [2]float32{math.MaxFloat32, -5},
 				want:  -math.MaxFloat32,
 			},
 			{
-				input: [2]float32{-math.MaxFloat32, 2},
+				input: [2]float32{-math.MaxFloat32, 5},
 				want:  math.MaxFloat32,
 			},
 			{
-				input: [2]float32{Inf[float32](1), -2},
+				input: [2]float32{Inf[float32](1), -5},
 				want:  Inf[float32](-1),
 			},
 			{
-				input: [2]float32{Inf[float32](-1), 2},
+				input: [2]float32{Inf[float32](-1), 5},
 				want:  Inf[float32](1),
 			},
 			{
-				input: [2]float32{NaN[float32](), 2},
+				input: [2]float32{NaN[float32](), 5},
 				want:  NaN[float32](),
+			},
+			{
+				input: [2]float32{-3, NaN[float32]()},
+				want:  3,
 			},
 		}
 		for _, test := range tests {
@@ -293,40 +297,44 @@ func TestCopysign(t *testing.T) {
 			want  float64
 		}{
 			{
-				input: [2]float64{3.2, 2},
+				input: [2]float64{3.2, 5},
 				want:  3.2,
 			},
 			{
-				input: [2]float64{-3.2, -2},
+				input: [2]float64{-3.2, -5},
 				want:  -3.2,
 			},
 			{
-				input: [2]float64{3.2, -2},
+				input: [2]float64{3.2, -5},
 				want:  -3.2,
 			},
 			{
-				input: [2]float64{-3.2, 2},
+				input: [2]float64{-3.2, 5},
 				want:  3.2,
 			},
 			{
-				input: [2]float64{math.MaxFloat64, -2},
+				input: [2]float64{math.MaxFloat64, -5},
 				want:  -math.MaxFloat64,
 			},
 			{
-				input: [2]float64{-math.MaxFloat64, 2},
+				input: [2]float64{-math.MaxFloat64, 5},
 				want:  math.MaxFloat64,
 			},
 			{
-				input: [2]float64{Inf[float64](1), -2},
+				input: [2]float64{Inf[float64](1), -5},
 				want:  Inf[float64](-1),
 			},
 			{
-				input: [2]float64{Inf[float64](-1), 2},
+				input: [2]float64{Inf[float64](-1), 5},
 				want:  Inf[float64](1),
 			},
 			{
-				input: [2]float64{NaN[float64](), 2},
+				input: [2]float64{NaN[float64](), 5},
 				want:  NaN[float64](),
+			},
+			{
+				input: [2]float64{-3, NaN[float64]()},
+				want:  3,
 			},
 		}
 		for _, test := range tests {

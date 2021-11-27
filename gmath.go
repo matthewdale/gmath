@@ -44,15 +44,26 @@ func Abs[T Ints | Floats](x T) T {
 // Copysign returns a value with the magnitude of x and the sign of y.
 //
 // Special cases are:
+//  Copysign(NaN, y) = NaN
+//  Copysign(x, NaN) = Abs(x)
 //  Copysign(int(math.MinInt), y >= 0) = math.MinInt
 //  Copysign(int8(math.MinInt8), y >= 0) = math.MinInt8
 //  Copysign(int16(math.MinInt16), y >= 0) = math.MinInt16
 //  Copysign(int32(math.MinInt32), y >= 0) = math.MinInt32
 //  Copysign(int64(math.MinInt64), y >= 0) = math.MinInt64
 func Copysign[T0, T1 Ints | Floats](x T0, y T1) T0 {
+	if IsNaN(x) {
+		return x
+	}
+	if IsNaN(y) {
+		return Abs(x)
+	}
+
+	// If x and y are already the same sign, return x.
 	if (x >= 0 && y >= 0) || (x < 0 && y < 0) {
 		return x
 	}
+	// Otherwise, flip the sign of x.
 	return -x
 }
 
