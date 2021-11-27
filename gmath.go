@@ -62,6 +62,8 @@ func Copysign[T0, T1 Ints | Floats](x T0, y T1) T0 {
 //	Dim(+Inf, +Inf) = NaN
 //	Dim(-Inf, -Inf) = NaN
 //	Dim(x, NaN) = Dim(NaN, x) = NaN
+//
+// From https://cs.opensource.google/go/go/+/go1.17.3:src/math/dim.go;l=13
 func Dim[T Reals](x, y T) T {
 	// The special cases result in NaN after the subtraction:
 	//      +Inf - +Inf = NaN
@@ -98,6 +100,8 @@ func IsInf(f interface{}, sign int) bool {
 }
 
 // IsNaN reports whether f is an IEEE 754 ``not-a-number'' value.
+//
+// From https://cs.opensource.google/go/go/+/go1.17.3:src/math/bits.go;l=34
 func IsNaN[T Reals](f T) bool {
 	// IEEE 754 says that only NaNs satisfy f != f.
 	// No other integer types satisfy f != f.
