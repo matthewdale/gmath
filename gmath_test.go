@@ -133,16 +133,16 @@ func TestAbs(t *testing.T) {
 				want:  math.Inf(1),
 			},
 			{
-				input: Inf[float64](1),
-				want:  Inf[float64](1),
+				input: math.Inf(1),
+				want:  math.Inf(1),
 			},
 			{
-				input: Inf[float64](-1),
-				want:  Inf[float64](1),
+				input: math.Inf(-1),
+				want:  math.Inf(1),
 			},
 			{
-				input: NaN[float64](),
-				want:  NaN[float64](),
+				input: math.NaN(),
+				want:  math.NaN(),
 			},
 		}
 		for _, test := range tests {
@@ -321,19 +321,19 @@ func TestCopysign(t *testing.T) {
 				want:  math.MaxFloat64,
 			},
 			{
-				input: [2]float64{Inf[float64](1), -5},
-				want:  Inf[float64](-1),
+				input: [2]float64{math.Inf(1), -5},
+				want:  math.Inf(-1),
 			},
 			{
-				input: [2]float64{Inf[float64](-1), 5},
-				want:  Inf[float64](1),
+				input: [2]float64{math.Inf(-1), 5},
+				want:  math.Inf(1),
 			},
 			{
-				input: [2]float64{NaN[float64](), 5},
-				want:  NaN[float64](),
+				input: [2]float64{math.NaN(), 5},
+				want:  math.NaN(),
 			},
 			{
-				input: [2]float64{-3, NaN[float64]()},
+				input: [2]float64{-3, math.NaN()},
 				want:  3,
 			},
 		}
@@ -453,15 +453,15 @@ func TestDim(t *testing.T) {
 				want:  0,
 			},
 			{
-				input: [2]float64{Inf[float64](1), Inf[float64](1)},
+				input: [2]float64{math.Inf(1), math.Inf(1)},
 				want:  math.NaN(),
 			},
 			{
-				input: [2]float64{Inf[float64](-1), Inf[float64](-1)},
+				input: [2]float64{math.Inf(-1), math.Inf(-1)},
 				want:  math.NaN(),
 			},
 			{
-				input: [2]float64{NaN[float64](), 1},
+				input: [2]float64{math.NaN(), 1},
 				want:  math.NaN(),
 			},
 		}
@@ -508,11 +508,11 @@ func TestIsInf(t *testing.T) {
 			want:  false,
 		},
 		{
-			input: [2]interface{}{Inf[float64](1), 1},
+			input: [2]interface{}{math.Inf(1), 1},
 			want:  true,
 		},
 		{
-			input: [2]interface{}{Inf[float64](1), -1},
+			input: [2]interface{}{math.Inf(1), -1},
 			want:  false,
 		},
 	}
@@ -811,7 +811,7 @@ func TestLog(t *testing.T) {
 				want:  2.302585092994046,
 			},
 			{
-				input: Inf[float64](1),
+				input: math.Inf(1),
 				want:  math.Inf(1),
 			},
 			{
@@ -819,7 +819,7 @@ func TestLog(t *testing.T) {
 				want:  math.Inf(-1),
 			},
 			{
-				input: NaN[float64](),
+				input: math.NaN(),
 				want:  math.NaN(),
 			},
 		}
@@ -989,7 +989,7 @@ func TestLog10(t *testing.T) {
 				want:  1,
 			},
 			{
-				input: Inf[float64](1),
+				input: math.Inf(1),
 				want:  math.Inf(1),
 			},
 			{
@@ -997,7 +997,7 @@ func TestLog10(t *testing.T) {
 				want:  math.Inf(-1),
 			},
 			{
-				input: NaN[float64](),
+				input: math.NaN(),
 				want:  math.NaN(),
 			},
 		}
@@ -1183,11 +1183,11 @@ func TestLog1p(t *testing.T) {
 				want:  math.NaN(),
 			},
 			{
-				input: Inf[float64](1),
+				input: math.Inf(1),
 				want:  math.Inf(1),
 			},
 			{
-				input: NaN[float64](),
+				input: math.NaN(),
 				want:  math.NaN(),
 			},
 		}
@@ -1349,7 +1349,7 @@ func TestLog2(t *testing.T) {
 				want:  3.321928094887362,
 			},
 			{
-				input: Inf[float64](1),
+				input: math.Inf(1),
 				want:  math.Inf(1),
 			},
 			{
@@ -1357,7 +1357,7 @@ func TestLog2(t *testing.T) {
 				want:  math.Inf(-1),
 			},
 			{
-				input: NaN[float64](),
+				input: math.NaN(),
 				want:  math.NaN(),
 			},
 		}
@@ -1478,7 +1478,7 @@ func TestLogb(t *testing.T) {
 				want:  3,
 			},
 			{
-				input: Inf[float64](1),
+				input: math.Inf(1),
 				want:  math.Inf(1),
 			},
 			{
@@ -1486,7 +1486,7 @@ func TestLogb(t *testing.T) {
 				want:  math.Inf(-1),
 			},
 			{
-				input: NaN[float64](),
+				input: math.NaN(),
 				want:  math.NaN(),
 			},
 		}
@@ -1509,10 +1509,6 @@ func TestMax(t *testing.T) {
 				input: [2]myInt{3, 1},
 				want:  3,
 			},
-			{
-				input: [2]myInt{-3, -1},
-				want:  -1,
-			},
 		}
 		for _, test := range tests {
 			t.Run(fmt.Sprint(test.input), func(t *testing.T) {
@@ -1533,6 +1529,14 @@ func TestMax(t *testing.T) {
 			{
 				input: [2]int{-3, -1},
 				want:  -1,
+			},
+			{
+				input: [2]int{math.MaxInt, math.MaxInt},
+				want: math.MaxInt,
+			},
+			{
+				input: [2]int{math.MinInt, math.MinInt},
+				want: math.MinInt,
 			},
 		}
 		for _, test := range tests {
@@ -1555,6 +1559,14 @@ func TestMax(t *testing.T) {
 				input: [2]int64{-3, -1},
 				want:  -1,
 			},
+			{
+				input: [2]int64{math.MaxInt64, math.MaxInt64},
+				want: math.MaxInt64,
+			},
+			{
+				input: [2]int64{math.MinInt64, math.MinInt64},
+				want: math.MinInt64,
+			},
 		}
 		for _, test := range tests {
 			t.Run(fmt.Sprint(test.input), func(t *testing.T) {
@@ -1576,6 +1588,10 @@ func TestMax(t *testing.T) {
 				input: [2]uint{2, 4},
 				want:  4,
 			},
+			{
+				input: [2]uint{math.MaxUint, math.MaxUint},
+				want: math.MaxUint,
+			},
 		}
 		for _, test := range tests {
 			t.Run(fmt.Sprint(test.input), func(t *testing.T) {
@@ -1596,6 +1612,10 @@ func TestMax(t *testing.T) {
 			{
 				input: [2]uint64{2, 4},
 				want:  4,
+			},
+			{
+				input: [2]uint64{math.MaxUint64, math.MaxUint64},
+				want: math.MaxUint64,
 			},
 		}
 		for _, test := range tests {
@@ -1691,10 +1711,6 @@ func TestMin(t *testing.T) {
 				input: [2]myInt{3, 1},
 				want:  1,
 			},
-			{
-				input: [2]myInt{-3, -1},
-				want:  -3,
-			},
 		}
 		for _, test := range tests {
 			t.Run(fmt.Sprint(test.input), func(t *testing.T) {
@@ -1715,6 +1731,14 @@ func TestMin(t *testing.T) {
 			{
 				input: [2]int{-3, -1},
 				want:  -3,
+			},
+			{
+				input: [2]int{math.MaxInt, math.MaxInt},
+				want: math.MaxInt,
+			},
+			{
+				input: [2]int{math.MinInt, math.MinInt},
+				want: math.MinInt,
 			},
 		}
 		for _, test := range tests {
@@ -1737,6 +1761,14 @@ func TestMin(t *testing.T) {
 				input: [2]int64{-3, -1},
 				want:  -3,
 			},
+			{
+				input: [2]int64{math.MaxInt64, math.MaxInt64},
+				want: math.MaxInt64,
+			},
+			{
+				input: [2]int64{math.MinInt64, math.MinInt64},
+				want: math.MinInt64,
+			},
 		}
 		for _, test := range tests {
 			t.Run(fmt.Sprint(test.input), func(t *testing.T) {
@@ -1758,6 +1790,10 @@ func TestMin(t *testing.T) {
 				input: [2]uint{2, 4},
 				want:  2,
 			},
+			{
+				input: [2]uint{math.MaxUint, math.MaxUint},
+				want: math.MaxUint,
+			},
 		}
 		for _, test := range tests {
 			t.Run(fmt.Sprint(test.input), func(t *testing.T) {
@@ -1778,6 +1814,10 @@ func TestMin(t *testing.T) {
 			{
 				input: [2]uint64{2, 4},
 				want:  2,
+			},
+			{
+				input: [2]uint64{math.MaxUint64, math.MaxUint64},
+				want: math.MaxUint64,
 			},
 		}
 		for _, test := range tests {
