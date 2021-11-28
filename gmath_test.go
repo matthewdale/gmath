@@ -1895,7 +1895,7 @@ func TestMin(t *testing.T) {
 	})
 }
 
-func eqOrNaN[T Reals](t *testing.T, want, got T) {
+func eqOrNaN[T Ints | Uints | Floats](t *testing.T, want, got T) {
 	t.Helper()
 
 	// Float value NaN is not equal to itself. Test that NaN is NaN

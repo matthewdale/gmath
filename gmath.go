@@ -4,11 +4,6 @@ package gmath
 
 import "math"
 
-// Reals is a constraint that is satisfied by any real number type.
-type Reals interface {
-	Ints | Uints | Floats
-}
-
 // Ints is a constraint that is satisfied by any integer number type.
 type Ints interface {
 	~int | ~int8 | ~int16 | ~int32 | ~int64
@@ -75,7 +70,7 @@ func Copysign[T0, T1 Ints | Floats](x T0, y T1) T0 {
 //	Dim(x, NaN) = Dim(NaN, x) = NaN
 //
 // From https://cs.opensource.google/go/go/+/go1.17.3:src/math/dim.go;l=13
-func Dim[T Reals](x, y T) T {
+func Dim[T Ints | Uints | Floats](x, y T) T {
 	// The special cases result in NaN after the subtraction:
 	//      +Inf - +Inf = NaN
 	//      -Inf - -Inf = NaN
@@ -113,7 +108,7 @@ func IsInf(f interface{}, sign int) bool {
 // IsNaN reports whether f is an IEEE 754 ``not-a-number'' value.
 //
 // From https://cs.opensource.google/go/go/+/go1.17.3:src/math/bits.go;l=34
-func IsNaN[T Reals](f T) bool {
+func IsNaN[T Ints | Uints | Floats](f T) bool {
 	// IEEE 754 says that only NaNs satisfy f != f.
 	// No other integer types satisfy f != f.
 	return f != f
@@ -129,7 +124,7 @@ func IsNaN[T Reals](f T) bool {
 //
 // Note that for integer values greater than 9007199254740993, some precision
 // may be lost because the input is converted to a float64.
-func Log[T Reals](x T) float64 {
+func Log[T Ints | Uints | Floats](x T) float64 {
 	return math.Log(float64(x))
 }
 
@@ -138,7 +133,7 @@ func Log[T Reals](x T) float64 {
 //
 // Note that for integer values greater than 9007199254740993, some precision
 // may be lost because the input is converted to a float64.
-func Log10[T Reals](x T) float64 {
+func Log10[T Ints | Uints | Floats](x T) float64 {
 	return math.Log10(float64(x))
 }
 
@@ -154,7 +149,7 @@ func Log10[T Reals](x T) float64 {
 //
 // Note that for integer values greater than 9007199254740993, some precision
 // may be lost because the input is converted to a float64.
-func Log1p[T Reals](x T) float64 {
+func Log1p[T Ints | Uints | Floats](x T) float64 {
 	return math.Log1p(float64(x))
 }
 
@@ -163,7 +158,7 @@ func Log1p[T Reals](x T) float64 {
 //
 // Note that for integer values greater than 9007199254740993, some precision
 // may be lost because the input is converted to a float64.
-func Log2[T Reals](x T) float64 {
+func Log2[T Ints | Uints | Floats](x T) float64 {
 	return math.Log2(float64(x))
 }
 
@@ -176,7 +171,7 @@ func Log2[T Reals](x T) float64 {
 //
 // Note that for integer values greater than 9007199254740993, some precision
 // may be lost because the input is converted to a float64.
-func Logb[T Reals](x T) float64 {
+func Logb[T Ints | Uints | Floats](x T) float64 {
 	return math.Logb(float64(x))
 }
 
@@ -187,7 +182,7 @@ func Logb[T Reals](x T) float64 {
 //	Max(x, NaN) = Max(NaN, x) = NaN
 //	Max(+0, ±0) = Max(±0, +0) = +0
 //	Max(-0, -0) = -0
-func Max[T Reals](x, y T) T {
+func Max[T Ints | Uints | Floats](x, y T) T {
 	if IsNaN(x) {
 		return x
 	}
@@ -207,7 +202,7 @@ func Max[T Reals](x, y T) T {
 //	Min(x, -Inf) = Min(-Inf, x) = -Inf
 //	Min(x, NaN) = Min(NaN, x) = NaN
 //	Min(-0, ±0) = Min(±0, -0) = -0
-func Min[T Reals](x, y T) T {
+func Min[T Ints | Uints | Floats](x, y T) T {
 	if IsNaN(x) {
 		return x
 	}
