@@ -475,53 +475,151 @@ func TestDim(t *testing.T) {
 }
 
 func TestIsInf(t *testing.T) {
-	tests := []struct {
-		input [2]interface{}
-		want  bool
-	}{
-		{
-			input: [2]interface{}{myInt(math.MaxInt), 1},
-			want:  false,
-		},
-		{
-			input: [2]interface{}{int(math.MaxInt), 1},
-			want:  false,
-		},
-		{
-			input: [2]interface{}{int64(math.MaxInt64), 1},
-			want:  false,
-		},
-		{
-			input: [2]interface{}{uint(math.MaxUint), 1},
-			want:  false,
-		},
-		{
-			input: [2]interface{}{uint64(math.MaxUint64), 1},
-			want:  false,
-		},
-		{
-			input: [2]interface{}{Inf[float32](1), 1},
-			want:  true,
-		},
-		{
-			input: [2]interface{}{Inf[float32](1), -1},
-			want:  false,
-		},
-		{
-			input: [2]interface{}{math.Inf(1), 1},
-			want:  true,
-		},
-		{
-			input: [2]interface{}{math.Inf(1), -1},
-			want:  false,
-		},
-	}
-	for _, test := range tests {
-		t.Run(fmt.Sprintf("%v (%T)", test.input, test.input[0]), func(t *testing.T) {
-			got := IsInf(test.input[0], test.input[1].(int))
-			assert.Equal(t, test.want, got, "expected result to be equal")
-		})
-	}
+	t.Run("myInt", func(t *testing.T) {
+		tests := []struct {
+			x    myInt
+			sign int
+			want bool
+		}{
+			{
+				x:    1,
+				sign: 1,
+				want: false,
+			},
+		}
+		for _, test := range tests {
+			t.Run(fmt.Sprint(test.x, test.sign), func(t *testing.T) {
+				got := IsInf(test.x, test.sign)
+				assert.Equal(t, test.want, got, "expected result to be equal")
+			})
+		}
+	})
+	t.Run("int", func(t *testing.T) {
+		tests := []struct {
+			x    int
+			sign int
+			want bool
+		}{
+			{
+				x:    math.MaxInt,
+				sign: 1,
+				want: false,
+			},
+			{
+				x:    math.MinInt,
+				sign: -1,
+				want: false,
+			},
+		}
+		for _, test := range tests {
+			t.Run(fmt.Sprint(test.x, test.sign), func(t *testing.T) {
+				got := IsInf(test.x, test.sign)
+				assert.Equal(t, test.want, got, "expected result to be equal")
+			})
+		}
+	})
+	t.Run("int64", func(t *testing.T) {
+		tests := []struct {
+			x    int64
+			sign int
+			want bool
+		}{
+			{
+				x:    math.MaxInt64,
+				sign: 1,
+				want: false,
+			},
+			{
+				x:    math.MinInt64,
+				sign: -1,
+				want: false,
+			},
+		}
+		for _, test := range tests {
+			t.Run(fmt.Sprint(test.x, test.sign), func(t *testing.T) {
+				got := IsInf(test.x, test.sign)
+				assert.Equal(t, test.want, got, "expected result to be equal")
+			})
+		}
+	})
+	t.Run("float32", func(t *testing.T) {
+		tests := []struct {
+			x    float32
+			sign int
+			want bool
+		}{
+			{
+				x:    1.0,
+				sign: 1,
+				want: false,
+			},
+			{
+				x:    Inf[float32](1),
+				sign: -1,
+				want: false,
+			},
+			{
+				x:    Inf[float32](-1),
+				sign: 1,
+				want: false,
+			},
+			{
+				x:    Inf[float32](1),
+				sign: 1,
+				want: true,
+			},
+			{
+				x:    Inf[float32](-1),
+				sign: -1,
+				want: true,
+			},
+		}
+		for _, test := range tests {
+			t.Run(fmt.Sprint(test.x, test.sign), func(t *testing.T) {
+				got := IsInf(test.x, test.sign)
+				assert.Equal(t, test.want, got, "expected result to be equal")
+			})
+		}
+	})
+	t.Run("float64", func(t *testing.T) {
+		tests := []struct {
+			x    float64
+			sign int
+			want bool
+		}{
+			{
+				x:    1.0,
+				sign: 1,
+				want: false,
+			},
+			{
+				x:    math.Inf(1),
+				sign: -1,
+				want: false,
+			},
+			{
+				x:    math.Inf(-1),
+				sign: 1,
+				want: false,
+			},
+			{
+				x:    math.Inf(1),
+				sign: 1,
+				want: true,
+			},
+			{
+				x:    math.Inf(-1),
+				sign: -1,
+				want: true,
+			},
+		}
+		for _, test := range tests {
+			t.Run(fmt.Sprint(test.x, test.sign), func(t *testing.T) {
+				got := IsInf(test.x, test.sign)
+				assert.Equal(t, test.want, got, "expected result to be equal")
+			})
+		}
+	})
 }
 
 func TestIsNaN(t *testing.T) {
@@ -886,7 +984,7 @@ func TestLog10(t *testing.T) {
 			},
 			{
 				input: math.MaxInt64,
-				want: 18.964889726830812,
+				want:  18.964889726830812,
 			},
 			{
 				input: 0,
@@ -936,7 +1034,7 @@ func TestLog10(t *testing.T) {
 			},
 			{
 				input: math.MaxInt64,
-				want: 18.964889726830812,
+				want:  18.964889726830812,
 			},
 			{
 				input: 0,
@@ -1532,11 +1630,11 @@ func TestMax(t *testing.T) {
 			},
 			{
 				input: [2]int{math.MaxInt, math.MaxInt},
-				want: math.MaxInt,
+				want:  math.MaxInt,
 			},
 			{
 				input: [2]int{math.MinInt, math.MinInt},
-				want: math.MinInt,
+				want:  math.MinInt,
 			},
 		}
 		for _, test := range tests {
@@ -1561,11 +1659,11 @@ func TestMax(t *testing.T) {
 			},
 			{
 				input: [2]int64{math.MaxInt64, math.MaxInt64},
-				want: math.MaxInt64,
+				want:  math.MaxInt64,
 			},
 			{
 				input: [2]int64{math.MinInt64, math.MinInt64},
-				want: math.MinInt64,
+				want:  math.MinInt64,
 			},
 		}
 		for _, test := range tests {
@@ -1590,7 +1688,7 @@ func TestMax(t *testing.T) {
 			},
 			{
 				input: [2]uint{math.MaxUint, math.MaxUint},
-				want: math.MaxUint,
+				want:  math.MaxUint,
 			},
 		}
 		for _, test := range tests {
@@ -1615,7 +1713,7 @@ func TestMax(t *testing.T) {
 			},
 			{
 				input: [2]uint64{math.MaxUint64, math.MaxUint64},
-				want: math.MaxUint64,
+				want:  math.MaxUint64,
 			},
 		}
 		for _, test := range tests {
@@ -1734,11 +1832,11 @@ func TestMin(t *testing.T) {
 			},
 			{
 				input: [2]int{math.MaxInt, math.MaxInt},
-				want: math.MaxInt,
+				want:  math.MaxInt,
 			},
 			{
 				input: [2]int{math.MinInt, math.MinInt},
-				want: math.MinInt,
+				want:  math.MinInt,
 			},
 		}
 		for _, test := range tests {
@@ -1763,11 +1861,11 @@ func TestMin(t *testing.T) {
 			},
 			{
 				input: [2]int64{math.MaxInt64, math.MaxInt64},
-				want: math.MaxInt64,
+				want:  math.MaxInt64,
 			},
 			{
 				input: [2]int64{math.MinInt64, math.MinInt64},
-				want: math.MinInt64,
+				want:  math.MinInt64,
 			},
 		}
 		for _, test := range tests {
@@ -1792,7 +1890,7 @@ func TestMin(t *testing.T) {
 			},
 			{
 				input: [2]uint{math.MaxUint, math.MaxUint},
-				want: math.MaxUint,
+				want:  math.MaxUint,
 			},
 		}
 		for _, test := range tests {
@@ -1817,7 +1915,7 @@ func TestMin(t *testing.T) {
 			},
 			{
 				input: [2]uint64{math.MaxUint64, math.MaxUint64},
-				want: math.MaxUint64,
+				want:  math.MaxUint64,
 			},
 		}
 		for _, test := range tests {

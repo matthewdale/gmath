@@ -85,7 +85,7 @@ func Dim[T Ints | Uints | Floats](x, y T) T {
 	return T(v)
 }
 
-// Inf returns positive infinity if sign >= 0, negative infinity if sign < 0. 
+// Inf returns positive infinity if sign >= 0, negative infinity if sign < 0.
 func Inf[T Floats](sign int) T {
 	return T(math.Inf(sign))
 }
@@ -94,24 +94,17 @@ func Inf[T Floats](sign int) T {
 // If sign > 0, IsInf reports whether f is positive infinity.
 // If sign < 0, IsInf reports whether f is negative infinity.
 // If sign == 0, IsInf reports whether f is either infinity.
-func IsInf(f interface{}, sign int) bool {
-	switch ff := f.(type) {
-	case float64:
-		return math.IsInf(ff, sign)
-	case float32:
-		return math.IsInf(float64(ff), sign)
-	default:
-		return false
-	}
+func IsInf[T Ints | Uints | Floats](x T, sign int) bool {
+	return math.IsInf(float64(x), sign)
 }
 
 // IsNaN reports whether f is an IEEE 754 ``not-a-number'' value.
 //
 // From https://cs.opensource.google/go/go/+/go1.17.3:src/math/bits.go;l=34
-func IsNaN[T Ints | Uints | Floats](f T) bool {
-	// IEEE 754 says that only NaNs satisfy f != f.
-	// No other integer types satisfy f != f.
-	return f != f
+func IsNaN[T Ints | Uints | Floats](x T) bool {
+	// IEEE 754 says that only NaNs satisfy x != x.
+	// No integer values satisfy x != x.
+	return x != x
 }
 
 // Log returns the natural logarithm of x.
